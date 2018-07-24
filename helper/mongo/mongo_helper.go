@@ -42,9 +42,17 @@ func CloneStringMap(source map[string]interface{}) map[string]interface{} {
 // CreateObjectID create a mongo object ID from a valid object ID interface
 func CreateObjectID(id interface{}) (bson.ObjectId, error) {
 	if _, ok := id.(bson.ObjectId); !ok {
-		if !bson.IsObjectIdHex(id.(string)) {
+		// Incase input is string
+		stringID, ok := id.(string)
+		if !ok {
+			return bson.ObjectId(""), errors.New("Unsuported input: only support string")
+		}
+		idObject := bson.ObjectId(stringID)
+		if !idObject.Valid() {
 			return bson.ObjectId(""), errors.New("Wrong id format")
 		}
+
+		return idObject, nil
 	}
 	return id.(bson.ObjectId), nil
 }

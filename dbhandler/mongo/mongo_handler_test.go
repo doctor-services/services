@@ -379,6 +379,7 @@ func TestUpdateBy(t *testing.T) {
 		t.Fatalf("Error during save message by ID: %s", err.Error())
 	}
 	insertedItem, err := dbhandler.FindItemByID(CollectionName, newMessageID)
+	// t.Errorf("Inserted Item id: %v", insertedItem["_id"])
 	if err != nil {
 		t.Fatalf("Error during find message by ID: %s", err.Error())
 	}
