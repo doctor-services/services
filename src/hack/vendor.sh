@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Copy from moby project
 # This file is just wrapper around vndr (github.com/LK4D4/vndr) tool.
