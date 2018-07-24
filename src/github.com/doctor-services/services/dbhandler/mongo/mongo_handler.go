@@ -1,8 +1,9 @@
 package mongo
 
 import (
-	"dbhandler"
-	mongoHelper "helper/mongo"
+	mongoHelper "github.com/doctor-services/services/helper/mongo"
+
+	"github.com/doctor-services/services/dbhandler"
 
 	"log"
 	"strconv"
@@ -393,6 +394,45 @@ func (m *mongoHandler) FindItemByID(dataName string, id interface{}) (map[string
 	}
 	data = mongoHelper.CreateMapFromBsonM(found.(bson.M))
 	return data, nil
+}
+
+func (m *mongoHandler) UpdateByID(dataName string, id interface{}, update map[string]interface{}) error {
+	// Make sure connection open
+	err := m.GetConnection()
+	if err != nil {
+		log.Printf("[App.db]: Error during get connection for updating item %s. %s\n", id, err)
+		return err
+	}
+	workingDBSession := m.connection.Copy()
+	defer workingDBSession.Close()
+	c := workingDBSession.DB(m.database).C(dataName)
+	// Make sure to use correct object id
+	objectID, err := mongoHelper.CreateObjectID(id)
+	if err != nil {
+		log.Printf("[App.db]: Error during create object id %s. %s\n", id, err)
+		return err
+	}
+	// Not allow to update id
+	willUpdateDoc := mongoHelper.CloneStringMap(update)
+	delete(willUpdateDoc, "_id")
+	response := c.UpdateId(objectID, willUpdateDoc)
+	return response
+}
+
+func (m *mongoHandler) UpdateBy(dataName string, selector interface{}, update map[string]interface{}) error {
+	// Make sure connection open
+	err := m.GetConnection()
+	if err != nil {
+		log.Printf("[App.db]: Error during get connection for updating item %s. %s\n", selector, err)
+		return err
+	}
+	willUpdateDoc := mongoHelper.CloneStringMap(update)
+	delete(willUpdateDoc, "_id")
+	workingDBSession := m.connection.Copy()
+	defer workingDBSession.Close()
+	c := workingDBSession.DB(m.database).C(dataName)
+	_, err = c.UpdateAll(selector, bson.M{"$set": willUpdateDoc})
+	return err
 }
 
 // NewMongoHandler create a instance of mongo db

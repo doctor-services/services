@@ -1,5 +1,5 @@
 {
-    // "go.gopath": "F:/Projects/doctor-services/services",
-    "go.gopath": "/home/anhpha/githup/doctor-services/services",
+    "go.gopath": "F:/Projects/doctor-services/services",
+    // "go.gopath": "/home/anhpha/githup/doctor-services/services",
     "go.autocompleteUnimportedPackages": true
 }
