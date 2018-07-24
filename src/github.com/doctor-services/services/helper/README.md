@@ -1,2 +1,0 @@
-# helpers
-All common helpers
