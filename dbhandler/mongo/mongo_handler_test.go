@@ -134,7 +134,7 @@ func TestInsertItem(t *testing.T) {
 	}
 }
 
-func TestInsertItemDisconnect(t *testing.T) {
+func TestInsertItemAfterDisconnect(t *testing.T) {
 	newMessageID := bson.NewObjectId()
 	message := map[string]interface{}{
 		"content":      "This is test message",
@@ -161,7 +161,7 @@ func TestInsertItemDisconnect(t *testing.T) {
 	}
 }
 
-func TestInsertItemDontId(t *testing.T) {
+func TestInsertItemWithoutId(t *testing.T) {
 	message := map[string]interface{}{
 		"code":         "aaaa",
 		"userId":       "289",
@@ -240,7 +240,7 @@ func TestFindAll(t *testing.T) {
 	}
 }
 
-func TestFindAllFilterNoify(t *testing.T) {
+func TestFindAllWithFilter(t *testing.T) {
 	dbhandler, err := initDbHandler()
 	defer dbhandler.CloseConnection()
 	if err != nil {
@@ -431,33 +431,34 @@ func TestUpdateByID(t *testing.T) {
 	dbhandler.RemoveItemByID(CollectionName, insertedItem["_id"].(string))
 }
 
-func TestUpdateByIDDisconnect(t *testing.T) {
-	dbhandler, err := initDbHandler()
-	defer dbhandler.CloseConnection()
-	newMessageID := bson.NewObjectId()
-	createdAt := time.Now()
-	message := map[string]interface{}{
-		"content":      "This is test message",
-		"_id":          newMessageID,
-		"actorID":      2,
-		"targetUserID": 12,
-		"createdAt":    createdAt,
-		"seen":         false,
-	}
-	_, err = dbhandler.AddNewItem(CollectionName, message)
-	if err != nil {
-		t.Fatalf("Error during save message by ID: %s", err.Error())
-	}
-	insertedItem, err := dbhandler.FindItemByID(CollectionName, newMessageID)
-	if err != nil {
-		t.Fatalf("Error during find message by ID: %s", err.Error())
-	}
-	dbhandler.connection.LogoutAll()
-	err = dbhandler.UpdateByID(CollectionName, (insertedItem["_id"].(string)), insertedItem)
-	if err == nil {
-		t.Fatalf("Update by id must return error but got %s", err.Error())
-	}
-}
+// func TestUpdateByIDAfterDisconnect(t *testing.T) {
+// 	dbhandler, err := initDbHandler()
+// 	defer dbhandler.CloseConnection()
+// 	newMessageID := bson.NewObjectId()
+// 	createdAt := time.Now()
+// 	message := map[string]interface{}{
+// 		"content":      "This is test message",
+// 		"_id":          newMessageID,
+// 		"actorID":      2,
+// 		"targetUserID": 12,
+// 		"createdAt":    createdAt,
+// 		"seen":         false,
+// 	}
+// 	_, err = dbhandler.AddNewItem(CollectionName, message)
+// 	if err != nil {
+// 		t.Errorf("Error during save message by ID: %s", err.Error())
+// 	}
+// 	insertedItem, err := dbhandler.FindItemByID(CollectionName, newMessageID)
+// 	if err != nil {
+// 		t.Errorf("Error during find message by ID: %s", err.Error())
+// 	}
+// 	dbhandler.CloseConnection()
+// 	insertedItem["seen"] = !(insertedItem["seen"]).(bool)
+// 	err = dbhandler.UpdateByID(CollectionName, (insertedItem["_id"].(string)), insertedItem)
+// 	if err == nil {
+// 		t.Error("Update by id must return error")
+// 	}
+// }
 
 func TestInvalidUpdateByID(t *testing.T) {
 	dbhandler, err := initDbHandler()

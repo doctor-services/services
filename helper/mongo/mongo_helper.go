@@ -45,10 +45,10 @@ func CreateObjectID(id interface{}) (bson.ObjectId, error) {
 		// Incase input is string
 		stringID, ok := id.(string)
 		if ok {
-			idObject := bson.ObjectId(stringID)
-			if !idObject.Valid() {
+			if !bson.IsObjectIdHex(stringID) {
 				return bson.ObjectId(""), errors.New("Wrong id format")
 			}
+			return bson.ObjectIdHex(stringID), nil
 		}
 		bytesID, ok := id.([]byte)
 		if !ok {
