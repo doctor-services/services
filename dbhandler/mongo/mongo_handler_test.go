@@ -14,7 +14,7 @@ import (
 
 const (
 	DbHost         = "localhost"
-	DbPort         = 27018
+	DbPort         = 27017
 	DbUser         = "root"
 	DbPass         = "root"
 	DbName         = "test_database"

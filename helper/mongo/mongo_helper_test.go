@@ -88,7 +88,7 @@ func TestCreateObjectID(t *testing.T) {
 		t.Error("Must return error in not valid id")
 	}
 	validIDString, _ := bson.NewObjectId().MarshalText()
-	r, e = CreateObjectID(string(validIDString))
+	r, e = CreateObjectID(validIDString)
 	if e != nil {
 		t.Errorf("Must not return error if valid id string but got %v for %s", e, validIDString)
 	}

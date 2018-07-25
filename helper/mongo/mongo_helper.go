@@ -44,15 +44,24 @@ func CreateObjectID(id interface{}) (bson.ObjectId, error) {
 	if _, ok := id.(bson.ObjectId); !ok {
 		// Incase input is string
 		stringID, ok := id.(string)
-		if !ok {
-			return bson.ObjectId(""), errors.New("Unsuported input: only support string")
+		if ok {
+			idObject := bson.ObjectId(stringID)
+			if !idObject.Valid() {
+				return bson.ObjectId(""), errors.New("Wrong id format")
+			}
 		}
-		idObject := bson.ObjectId(stringID)
-		if !idObject.Valid() {
+		bytesID, ok := id.([]byte)
+		if !ok {
+			return bson.ObjectId(""), errors.New("Unsuported input: only support string and []byte")
+		}
+		// create a (may be invalid) object type of ObjectId
+		var result = bson.ObjectId(bytesID)
+		err := result.UnmarshalText(bytesID)
+		if err != nil {
 			return bson.ObjectId(""), errors.New("Wrong id format")
 		}
 
-		return idObject, nil
+		return result, nil
 	}
 	return id.(bson.ObjectId), nil
 }
