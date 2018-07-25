@@ -1,4 +1,4 @@
-# All docker service repository
+# All doctor services repository
 APIs and back-end projects
 # Project structure
 Put this project in to `$GOPATH/src/github.com/doctor-services/services`
