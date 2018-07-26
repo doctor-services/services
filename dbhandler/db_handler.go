@@ -29,10 +29,9 @@ type DatabaseHandler interface {
 	GetConnection() error
 	CloseConnection()
 	GetAllItems(dataname string, limit int, page int, orderBy string, sortBy string, filters map[string]interface{}) (PagedResults, error)
-	GetAllItemsByKey(dataname string, limit int, page int, orderBy string, sortBy string, filters map[string]interface{}, key string) (PagedResults, error)
-	GetAllItemsNoLimit(dataname string, key string) ([]map[string]interface{}, error)
 	AddNewItem(dataName string, item map[string]interface{}) (map[string]interface{}, error)
 	RemoveItemByID(dataName string, id interface{}) error
 	FindItemByID(dataName string, id interface{}) (map[string]interface{}, error)
+	UpdateBy(dataName string, selector interface{}, update map[string]interface{}) error
 	IsConnecting() bool
 }

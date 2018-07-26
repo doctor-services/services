@@ -222,24 +222,6 @@ func TestInsertAndFindById(t *testing.T) {
 	}
 }
 
-func TestFindAll(t *testing.T) {
-	dbhandler, err := initDbHandler()
-	defer dbhandler.CloseConnection()
-	if err != nil {
-		t.Fatalf("Fail when init db")
-	}
-	eachGetAll := []string{"productGroup", "notifyTemplate", "productGroupTopic", "subscriabletopic", "userdevicetoken"}
-	for _, v := range eachGetAll {
-		results, err := dbhandler.GetAllItemsByKey(CollectionName, 10, 1, "DESC", "createdAt", map[string]interface{}{"actorID": 1}, v)
-		if err != nil {
-			t.Fatalf("Error when get all items %s", err.Error())
-		}
-		if results.PageSize > 10 {
-			t.Fatalf("Number of returned items cannot be greater than limit")
-		}
-	}
-}
-
 func TestFindAllWithFilter(t *testing.T) {
 	dbhandler, err := initDbHandler()
 	defer dbhandler.CloseConnection()
