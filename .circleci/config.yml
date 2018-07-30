@@ -27,8 +27,8 @@ jobs:
           go get golang.org/x/tools/cmd/cover
           go get github.com/modocache/gover
           go get github.com/mattn/goveralls
-          # go install github.com/LK4D4/vndr
-          go get github.com/jstemmer/go-junit-report
+          go get github.com/go-playground/overalls
+          go install github.com/go-playground/overalls
           vndr
       - run:
           name: Waiting for mongo to be ready
@@ -44,20 +44,9 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            go list ./... | cut -d'/' -f 4- | while read d
-            do
-              cd $d
-              go test -covermode count -coverprofile coverage.coverprofile
-              cd -
-            done
-
-            gover
-            goveralls -coverprofile gover.coverprofile -service travis-ci # -repotoken $COVERALLS_TOKEN
-            find . -name '*.coverprofile' -delete  
-          # trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
-            # make test | tee ${TEST_RESULTS}/go-test.out
-          # go test ./... -covermode=atomic -coverprofile=coverage.txt
-          # go test -v -covermode=count -coverprofile=coverage.out
+            go test -v -race ./...
+            overalls -project=github.com/vitalyisaev2/skiena -covermode=count
+            $HOME/gopath/bin/goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken $COVERALLS_TOKEN
       - run: make
       - save_cache:
           key: v1-pkg-cache

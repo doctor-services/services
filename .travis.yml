@@ -7,16 +7,21 @@ services:
 before_install:
   - sleep 15
   - mongo test_database --eval 'db.createUser({user:"root",pwd:"root",roles:["readWrite"]});'
+ install: 
   - go get github.com/mattn/goveralls
   - go get github.com/modocache/gover
   - go get -u github.com/LK4D4/vndr
   - go install github.com/LK4D4/vndr
+  - go get github.com/go-playground/overalls
+  - go install github.com/go-playground/overalls
   - vndr
-  - chmod +x ./coveralls.bash
+  # - chmod +x ./coveralls.bash
 
 script:
   - go test -race -v ./...
-  - ./coveralls.bash
+  - overalls -project=github.com/vitalyisaev2/skiena -covermode=count
+  - $HOME/gopath/bin/goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken $COVERALLS_TOKEN
+  # - ./coveralls.bash
 
 go:
   - 1.9.x
