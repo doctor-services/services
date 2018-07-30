@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-go:
+  build:
     docker:
       - image: circleci/golang:latest
       - image: mongo:latest
