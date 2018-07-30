@@ -12,7 +12,7 @@ before_install:
   - go get -u github.com/LK4D4/vndr
   - go install github.com/LK4D4/vndr
   - vndr
-  - chmod +x ./travis/coveralls.bash
+  - chmod +x ./coveralls.bash
 
 script:
   - go test -race -v ./...
