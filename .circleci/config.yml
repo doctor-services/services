@@ -37,7 +37,7 @@ jobs:
           name: Run unit tests
           command: |
             echo 'export COVERALLS_TOKEN=$COVERALLS_TOKEN' >> $BASH_ENV
-            source $BASH_EN
+            source $BASH_ENV
             go test -v -race ./...
             overalls -project=github.com/doctor-services/services -covermode=count
             goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken=$COVERALLS_TOKEN
