@@ -40,7 +40,7 @@ jobs:
             source $BASH_ENV
             go test -v -race ./...
             overalls -project=github.com/doctor-services/services -covermode=count
-            goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken=$COVERALLS_TOKEN
+            goveralls -coverprofile=overalls.coverprofile -service=circle-ci -repotoken=$COVERALLS_TOKEN
       - run: make
       - save_cache:
           key: v1-pkg-cache
