@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/doctor-services/services/badge.svg?branch=master)](https://coveralls.io/github/doctor-services/services?branch=master)
+
 # All doctor services repository
 APIs and back-end projects
 # Project structure
