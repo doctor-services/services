@@ -45,7 +45,7 @@ jobs:
           name: Run unit tests
           command: |
             go test -v -race ./...
-            overalls -project=github.com/vitalyisaev2/skiena -covermode=count
+            overalls -project=github.com/doctor-services/services -covermode=count
             $HOME/gopath/bin/goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken $COVERALLS_TOKEN
       - run: make
       - save_cache:
