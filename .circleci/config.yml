@@ -1,0 +1,60 @@
+version: 2
+jobs:
+  build-go:
+    docker:
+      - image: circleci/golang:latest
+      - image: mongo:latest
+        environment: 
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: root
+          MONGO_INITDB_DATABASE: test_database
+          MONGO_HOST: localhost
+          MONGO_PORT: 27017
+          MONGO_USER: root
+          MONGO_PASS: root
+    working_directory: /go/src/github.com/doctor-services/services
+    environment:
+      TEST_RESULTS: /tmp/test-results
+
+    steps:
+      - checkout
+      - run: mkdir -p $TEST_RESULTS
+      - restore_cache:
+          keys:
+            - v1-pkg-cache
+      - run: |
+          go get -u go get github.com/LK4D4/vndr
+          # go get golang.org/x/tools/cmd/cover
+          # go get github.com/mattn/goveralls
+          # go install github.com/LK4D4/vndr
+          go get github.com/jstemmer/go-junit-report
+          vndr
+      - run:
+          name: Waiting for mongo to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 27017 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
+      
+      - run:
+          name: Run unit tests
+          command: |
+            trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
+            make test | tee ${TEST_RESULTS}/go-test.out
+          # go test ./... -covermode=atomic -coverprofile=coverage.txt
+          # go test -v -covermode=count -coverprofile=coverage.out
+      - run: make
+      - save_cache:
+          key: v1-pkg-cache
+          paths:
+            - "/go/pkg"
+# workflows:
+#   version: 2
+
+#   ci:
+#     jobs:
+#       - build-go

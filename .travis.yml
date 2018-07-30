@@ -2,10 +2,16 @@ language: go
 
 # env:
 #   - COVERALLS_TOKEN=MYSkSqcsWXd6DmP6TnSeiDhtvuL4u6ndp
-
+services:
+  - mongodb
 before_install:
+  - sleep 15
+  - mongo test_database --eval 'db.createUser({user:"root",pwd:"root",roles:["readWrite"]});'
   - go get github.com/mattn/goveralls
   - go get github.com/modocache/gover
+  - go get -u go get github.com/LK4D4/vndr
+  - go install github.com/LK4D4/vndr
+  - vndr
 
 script:
   - go test -race -v ./...
