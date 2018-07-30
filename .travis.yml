@@ -6,7 +6,6 @@ services:
   - mongodb
 before_install:
   - sleep 15
-  - mongo test_database --eval 'db.createUser({user:"root",pwd:"root",roles:["readWrite"]});'
  install: 
   - go get github.com/mattn/goveralls
   - go get github.com/modocache/gover
