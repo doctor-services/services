@@ -79,38 +79,6 @@ func (e InvalidObjectIDError) Error() string {
 // GetAllItems get all items with paging infor
 func (m *mongoHandler) GetAllItems(dataname string, limit int, page int, orderBy string,
 	sortBy string, filters map[string]interface{}) (dbhandler.PagedResults, error) {
-	//field dont empty
-	filters["content"] = bson.M{"$exists": true}
-	filters["seenAt"] = bson.M{"$exists": true}
-	filters["createdAt"] = bson.M{"$exists": true}
-	//create fillter
-	if mongoHelper.IsMapContenNonEmptyKey(filters, "actorid") {
-		filters["actorID"], _ = strconv.Atoi(filters["actorid"].(string))
-		delete(filters, "actorid")
-	} else {
-		filters["actorID"] = bson.M{"$exists": true}
-	}
-
-	if mongoHelper.IsMapContenNonEmptyKey(filters, "targetuserid") {
-		filters["targetUserID"], _ = strconv.Atoi(filters["targetuserid"].(string))
-		delete(filters, "targetuserid")
-	}
-
-	if mongoHelper.IsMapContenNonEmptyKey(filters, "targetgroupid") {
-		filters["targetGroupID"], _ = strconv.Atoi(filters["targetgroupid"].(string))
-		delete(filters, "targetgroupid")
-	}
-
-	if mongoHelper.IsMapContenNonEmptyKey(filters, "type") {
-		filters["notifyType"], _ = strconv.Atoi(filters["type"].(string))
-		delete(filters, "type")
-	} else {
-		filters["notifyType"] = bson.M{"$exists": true}
-	}
-
-	if mongoHelper.IsMapContenNonEmptyKey(filters, "seen") {
-		filters["seen"], _ = strconv.ParseBool(filters["seen"].(string))
-	}
 
 	// Make sure connection open
 	err := m.GetConnection()
