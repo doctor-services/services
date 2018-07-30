@@ -36,9 +36,11 @@ jobs:
       - run:
           name: Run unit tests
           command: |
+            echo 'export COVERALLS_TOKEN=$COVERALLS_TOKEN' >> $BASH_ENV
+            source $BASH_EN
             go test -v -race ./...
             overalls -project=github.com/doctor-services/services -covermode=count
-            goveralls -coverprofile=overalls.coverprofile -service=travis-ci
+            goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken=$COVERALLS_TOKEN
       - run: make
       - save_cache:
           key: v1-pkg-cache
