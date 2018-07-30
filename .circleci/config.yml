@@ -46,7 +46,7 @@ jobs:
           command: |
             go test -v -race ./...
             overalls -project=github.com/doctor-services/services -covermode=count
-            $HOME/gopath/bin/goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken $COVERALLS_TOKEN
+            goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken $COVERALLS_TOKEN
       - run: make
       - save_cache:
           key: v1-pkg-cache

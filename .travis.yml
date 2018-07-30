@@ -20,7 +20,7 @@ before_install:
 script:
   - go test -race -v ./...
   - overalls -project=github.com/doctor-services/services -covermode=count
-  - $HOME/gopath/bin/goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken $COVERALLS_TOKEN
+  - goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken $COVERALLS_TOKEN
   # - ./coveralls.bash
 
 go:
