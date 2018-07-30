@@ -12,11 +12,11 @@ then
 	exit 1
 fi
 
-if [[ "$COVERALLS_TOKEN" == "" ]]
-then
-	echo COVERALLS_TOKEN not set
-	exit 1
-fi
+# if [[ "$COVERALLS_TOKEN" == "" ]]
+# then
+# 	echo COVERALLS_TOKEN not set
+# 	exit 1
+# fi
 
 go list ./... | cut -d'/' -f 4- | while read d
 do
@@ -26,5 +26,5 @@ do
 done
 
 gover
-goveralls -coverprofile gover.coverprofile -service travis-ci -repotoken $COVERALLS_TOKEN
+goveralls -coverprofile gover.coverprofile -service travis-ci # -repotoken $COVERALLS_TOKEN
 find . -name '*.coverprofile' -delete
