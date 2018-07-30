@@ -23,7 +23,7 @@ jobs:
           keys:
             - v1-pkg-cache
       - run: |
-          go get -u go get github.com/LK4D4/vndr
+          go get -u github.com/LK4D4/vndr
           # go get golang.org/x/tools/cmd/cover
           # go get github.com/mattn/goveralls
           # go install github.com/LK4D4/vndr
