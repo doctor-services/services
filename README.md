@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/doctor-services/services.svg?branch=master)](https://travis-ci.org/doctor-services/services)
 [![Coverage Status](https://coveralls.io/repos/github/doctor-services/services/badge.svg?branch=master)](https://coveralls.io/github/doctor-services/services?branch=master)
 
 # All doctor services repository
