@@ -6,7 +6,6 @@ services:
   - mongodb
 before_install:
   - sleep 15
- install: 
   - go get github.com/mattn/goveralls
   - go get github.com/modocache/gover
   - go get -u github.com/LK4D4/vndr
